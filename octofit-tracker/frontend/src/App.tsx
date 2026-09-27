@@ -1,11 +1,11 @@
 import { Link, Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import logo from '../../../docs/octofitapp-small.png';
 import { apiBaseUrl } from './api';
-import Activities from './components/Activities';
-import Leaderboard from './components/Leaderboard';
-import Teams from './components/Teams';
-import Users from './components/Users';
-import Workouts from './components/Workouts';
+import Activities from './components/Activities.jsx';
+import Leaderboard from './components/Leaderboard.jsx';
+import Teams from './components/Teams.jsx';
+import Users from './components/Users.jsx';
+import Workouts from './components/Workouts.jsx';
 import './App.css';
 
 const sections = [

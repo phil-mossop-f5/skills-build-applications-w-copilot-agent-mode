@@ -1,9 +1,13 @@
-import { useCollection } from '../api';
+import { apiBaseUrl, useCollection } from '../api';
 import CollectionFrame from './CollectionFrame';
 import { numberValue, recordKey, textValue } from './recordUtils';
 
+const endpoint = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`
+  : `${apiBaseUrl}/api/workouts/`;
+
 export default function Workouts() {
-  const { records, loading, error } = useCollection('workouts');
+  const { records, loading, error } = useCollection(endpoint);
 
   return (
     <CollectionFrame
@@ -18,7 +22,7 @@ export default function Workouts() {
       <div className="workout-grid">
         {records.map((record, index) => {
           const exercises = Array.isArray(record.exercises)
-            ? record.exercises.filter((exercise): exercise is string => typeof exercise === 'string')
+            ? record.exercises.filter((exercise) => typeof exercise === 'string')
             : [];
           const duration = numberValue(record, 'durationMinutes', 'duration');
           return (

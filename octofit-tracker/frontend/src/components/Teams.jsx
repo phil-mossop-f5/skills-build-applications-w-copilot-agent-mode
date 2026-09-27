@@ -1,9 +1,13 @@
-import { useCollection } from '../api';
+import { apiBaseUrl, useCollection } from '../api';
 import CollectionFrame from './CollectionFrame';
 import { numberValue, recordKey, textValue } from './recordUtils';
 
+const endpoint = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/teams/`
+  : `${apiBaseUrl}/api/teams/`;
+
 export default function Teams() {
-  const { records, loading, error } = useCollection('teams');
+  const { records, loading, error } = useCollection(endpoint);
 
   return (
     <CollectionFrame

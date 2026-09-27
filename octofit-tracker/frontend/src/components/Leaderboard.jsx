@@ -1,9 +1,13 @@
-import { useCollection } from '../api';
+import { apiBaseUrl, useCollection } from '../api';
 import CollectionFrame from './CollectionFrame';
 import { memberLabel, numberValue, recordKey, textValue } from './recordUtils';
 
+const endpoint = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/leaderboard/`
+  : `${apiBaseUrl}/api/leaderboard/`;
+
 export default function Leaderboard() {
-  const { records, loading, error } = useCollection('leaderboard');
+  const { records, loading, error } = useCollection(endpoint);
   const rankedRecords = [...records].sort((first, second) => {
     const firstRank = numberValue(first, 'rank') ?? Number.MAX_SAFE_INTEGER;
     const secondRank = numberValue(second, 'rank') ?? Number.MAX_SAFE_INTEGER;

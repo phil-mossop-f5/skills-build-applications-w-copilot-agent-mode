@@ -1,9 +1,13 @@
-import { useCollection } from '../api';
+import { apiBaseUrl, useCollection } from '../api';
 import CollectionFrame from './CollectionFrame';
 import { initials, recordKey, textValue } from './recordUtils';
 
+const endpoint = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/users/`
+  : `${apiBaseUrl}/api/users/`;
+
 export default function Users() {
-  const { records, loading, error } = useCollection('users');
+  const { records, loading, error } = useCollection(endpoint);
 
   return (
     <CollectionFrame

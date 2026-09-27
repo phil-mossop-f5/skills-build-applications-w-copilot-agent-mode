@@ -31,10 +31,13 @@ function findCollection<T>(payload: unknown): T[] | undefined {
 }
 
 export async function fetchCollection<T extends ApiRecord = ApiRecord>(
-  component: string,
+  componentOrUrl: string,
   signal?: AbortSignal,
 ): Promise<T[]> {
-  const response = await fetch(`${apiBaseUrl}/api/${component}/`, { signal });
+  const endpoint = /^https?:\/\//.test(componentOrUrl)
+    ? componentOrUrl
+    : `${apiBaseUrl}/api/${componentOrUrl}/`;
+  const response = await fetch(endpoint, { signal });
 
   if (!response.ok) {
     throw new Error(`Request failed (${response.status} ${response.statusText})`);
@@ -50,7 +53,7 @@ export async function fetchCollection<T extends ApiRecord = ApiRecord>(
   return collection;
 }
 
-export function useCollection<T extends ApiRecord = ApiRecord>(component: string) {
+export function useCollection<T extends ApiRecord = ApiRecord>(componentOrUrl: string) {
   const [records, setRecords] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -58,7 +61,7 @@ export function useCollection<T extends ApiRecord = ApiRecord>(component: string
   useEffect(() => {
     const controller = new AbortController();
 
-    fetchCollection<T>(component, controller.signal)
+    fetchCollection<T>(componentOrUrl, controller.signal)
       .then(setRecords)
       .catch((requestError: unknown) => {
         if (!controller.signal.aborted) {
@@ -75,7 +78,7 @@ export function useCollection<T extends ApiRecord = ApiRecord>(component: string
       });
 
     return () => controller.abort();
-  }, [component]);
+  }, [componentOrUrl]);
 
   return { records, loading, error };
 }
