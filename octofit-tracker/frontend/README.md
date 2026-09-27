@@ -30,3 +30,17 @@ If you are developing a production application, we recommend enabling type-aware
 ```
 
 See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+
+## API Configuration
+
+In Codespaces, define `VITE_CODESPACE_NAME` in `octofit-tracker/frontend/.env.local` using the Codespace name shown in the environment:
+
+```env
+VITE_CODESPACE_NAME=your-codespace-name
+```
+
+Vite exposes this value to the browser and builds the API base URL as `https://<codespace-name>-8000.app.github.dev`. Restart the Vite dev server after changing `.env.local`. If the variable is unset, the app safely uses `http://localhost:8000` instead of constructing an invalid `https://undefined-8000...` URL.
+
+## Development
+
+Run `npm run dev` from this frontend package to start Vite. The backend API is expected on port 8000.
