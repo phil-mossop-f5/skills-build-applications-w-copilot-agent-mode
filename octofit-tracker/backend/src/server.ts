@@ -9,8 +9,12 @@ const codespaceName = process.env.CODESPACE_NAME;
 const apiBaseUrl = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
   : 'http://localhost:8000';
+const frontendOrigins = [
+  process.env.FRONTEND_URL ?? 'http://localhost:5173',
+  ...(codespaceName ? [`https://${codespaceName}-5173.app.github.dev`] : []),
+];
 
-app.use(cors({ origin: process.env.FRONTEND_URL ?? 'http://localhost:5173' }));
+app.use(cors({ origin: frontendOrigins }));
 app.use(express.json());
 
 app.get('/api/health', (_request, response) => {
